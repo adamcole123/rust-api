@@ -1,0 +1,33 @@
+ use std::{
+     error,
+     fs::{read_to_string, write},
+     path::Path,
+     result
+ };
+
+type TResult<T> = result::Result<T, TError>;
+type TError = Box<dyn error::Error>;
+
+fn read_file(p: &str) -> TResult<String> {
+    read_to_string(p).map_err(|e| e.into())
+}
+
+
+fn main() {
+    println!("This is a test!");
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_read_file(){
+        let res = read_file("test_data/test_one.txt");
+        assert!(res.is_ok());
+
+        if let Ok(s) = res {
+            assert_eq!(s, "this is a test file yo\n");
+        }
+    }
+}
